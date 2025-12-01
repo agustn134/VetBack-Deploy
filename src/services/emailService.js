@@ -4,13 +4,13 @@ const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 // // Configurar el transportador de Nodemailer
-const transporter = nodemailer.createTransport({
-        service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
+// const transporter = nodemailer.createTransport({
+    //     service: 'gmail'
+//     auth: {
+//         user: process.env.EMAIL_USER,
+//         pass: process.env.EMAIL_PASS
+//     }
+// });
 
 // // Verificar la conexión al iniciar
 // transporter.verify((error, success) => {
@@ -21,19 +21,19 @@ const transporter = nodemailer.createTransport({
 //     }
 // });
 
-// // Configurar el transportador de Nodemailer (Ajustado para Render)
-// const transporter = nodemailer.createTransport({
-//     host: 'smtp.gmail.com',
-//     port: 587, // Puerto estándar para TLS (evita bloqueos en la nube)
-//     secure: false, // false para puerto 587 (usa STARTTLS)
-//     auth: {
-//         user: process.env.EMAIL_USER,
-//         pass: process.env.EMAIL_PASS // Recuerda: Aquí va la "Contraseña de Aplicación" de 16 letras
-//     },
-//     tls: {
-//         rejectUnauthorized: false // Ayuda a evitar errores de certificado en la red de Render
-//     }
-// });
+// Configurar el transportador de Nodemailer (Ajustado para Render)
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587, // Puerto estándar para TLS (evita bloqueos en la nube)
+    secure: false, // false para puerto 587 (usa STARTTLS)
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS // Recuerda: Aquí va la "Contraseña de Aplicación" de 16 letras
+    },
+    tls: {
+        rejectUnauthorized: false // Ayuda a evitar errores de certificado en la red de Render
+    }
+});
 
 // Verificar la conexión al iniciar
 transporter.verify((error, success) => {
