@@ -26,14 +26,31 @@
 
 const { Pool } = require('pg');
 
+// const pool = new Pool({
+//   user: 'postgres',
+//   host: 'db.lfxynmzglazwgepfnerg.supabase.co', // Tu nuevo host en la nube
+//   database: 'postgres', // En Supabase la base principal se llama 'postgres'
+//   password: process.env.DB_PASSWORD, // Asegúrate de que tu variable de entorno tenga la contraseña 'morralitodev'
+//   port: 5432,
+//   ssl: { rejectUnauthorized: false } // Requisito obligatorio para Supabase
+//   ,connectionTimeoutMillis: 10000 // Dale tiempo para conectar
+// });
+
 const pool = new Pool({
-  user: 'postgres',
-  host: 'db.lfxynmzglazwgepfnerg.supabase.co', // Tu nuevo host en la nube
-  database: 'postgres', // En Supabase la base principal se llama 'postgres'
-  password: process.env.DB_PASSWORD, // Asegúrate de que tu variable de entorno tenga la contraseña 'morralitodev'
-  port: 5432,
-  ssl: { rejectUnauthorized: false } // Requisito obligatorio para Supabase
-  ,connectionTimeoutMillis: 10000 // Dale tiempo para conectar
+  // Usuario: postgres.[tu-proyecto]
+  user: 'postgres.lfxynmzglazwgepfnerg', 
+  
+  // Host del Pooler (Reemplaza si Supabase te da uno distinto en Settings -> Database)
+  host: 'aws-0-us-east-1.pooler.supabase.com', 
+  
+  database: 'postgres',
+  password: process.env.DB_PASSWORD,
+  
+  // Puerto del Pooler (Importante: 6543)
+  port: 6543, 
+  
+  ssl: { rejectUnauthorized: false },
+  connectionTimeoutMillis: 10000
 });
 
 async function connectDB() {
