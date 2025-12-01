@@ -97,7 +97,7 @@ const enviarConfirmacionCita = async (cita, clienteCorreo, clienteNombre) => {
     console.log(`[EMAIL SERVICE] Enviando solicitud de CONFIRMACIÓN de cita ID: ${cita.id_cita} a ${clienteCorreo}`);
     
     // URL de confirmación que apunta al nuevo endpoint del controlador
-    const CONFIRMATION_URL = `http://localhost:3000/api/citas/confirmar/${cita.token_confirmacion}`;
+    const CONFIRMATION_URL = `http://vetback-api.onrender.com/api/citas/confirmar/${cita.token_confirmacion}`;
     
     const mailOptions = {
         from: process.env.EMAIL_FROM,
@@ -300,7 +300,7 @@ const enviarNotificacionHito = async (mascota, clienteCorreo, clienteNombre, con
     console.log(`[EMAIL SERVICE] Enviando correo de HITO (IA) para: ${mascota.mascota_nombre} a ${clienteCorreo}`);
     
     // El enlace que solicitaste
-    const AGENDAR_CITA_URL = "http://localhost:4200/solicitar-cita";
+    const AGENDAR_CITA_URL = "https://elmorralitovet.web.app/solicitar-cita";
     
     const mailOptions = {
         from: process.env.EMAIL_FROM,

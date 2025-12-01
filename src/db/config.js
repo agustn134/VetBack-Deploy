@@ -33,6 +33,7 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD, // Asegúrate de que tu variable de entorno tenga la contraseña 'morralitodev'
   port: 5432,
   ssl: { rejectUnauthorized: false } // Requisito obligatorio para Supabase
+  ,connectionTimeoutMillis: 10000 // Dale tiempo para conectar
 });
 
 async function connectDB() {

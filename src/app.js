@@ -4,21 +4,32 @@ const cors = require('cors');
 const path = require('path');
 
 const allowedOrigins = [
-  'http://localhost:4200', // Para cuando pruebas en tu PC
+  //'http://localhost:4200', // Para cuando pruebas en tu PC
   'https://elmorralitovet.web.app', // Tu frontend en Firebase
   'https://elmorralitovet.firebaseapp.com' // URL alternativa de Firebase
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Bloqueado por CORS'));
-    }
-  },
-  credentials: true // Importante si usas cookies o headers de autorización
-}));
+app.use(
+//   cors({
+//   origin: function (origin, callback) {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Bloqueado por CORS'));
+//     }
+//   },
+  
+//   credentials: true // Importante si usas cookies o headers de autorización
+// })
+
+cors({
+  origin: '*', // Permitir todo temporalmente para probar
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+})
+
+
+);
 
 // Middlewares
 // app.use(express.json());
