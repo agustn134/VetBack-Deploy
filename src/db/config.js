@@ -41,10 +41,10 @@ const pool = new Pool({
   user: 'postgres.lfxynmzglazwgepfnerg', 
   
   // Host del Pooler (Reemplaza si Supabase te da uno distinto en Settings -> Database)
-  host: 'aws-0-us-east-1.pooler.supabase.com', 
+  host: 'aws-0-us-east-2.pooler.supabase.com', 
   
   database: 'postgres',
-  password: process.env.DB_PASSWORD,
+  password: 'morralitodev',
   
   // Puerto del Pooler (Importante: 6543)
   port: 6543, 
