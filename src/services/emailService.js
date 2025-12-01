@@ -3,12 +3,35 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-// Configurar el transportador de Nodemailer
+// // Configurar el transportador de Nodemailer
+// const transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: process.env.EMAIL_USER,
+//         pass: process.env.EMAIL_PASS
+//     }
+// });
+
+// // Verificar la conexión al iniciar
+// transporter.verify((error, success) => {
+//     if (error) {
+//         console.error('[EMAIL SERVICE] Error al conectar con Gmail:', error);
+//     } else {
+//         console.log('[EMAIL SERVICE] Servicio de correo listo para enviar mensajes');
+//     }
+// });
+
+// Configurar el transportador de Nodemailer (Ajustado para Render)
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587, // Puerto estándar para TLS (evita bloqueos en la nube)
+    secure: false, // false para puerto 587 (usa STARTTLS)
     auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        pass: process.env.EMAIL_PASS // Recuerda: Aquí va la "Contraseña de Aplicación" de 16 letras
+    },
+    tls: {
+        rejectUnauthorized: false // Ayuda a evitar errores de certificado en la red de Render
     }
 });
 
@@ -17,9 +40,11 @@ transporter.verify((error, success) => {
     if (error) {
         console.error('[EMAIL SERVICE] Error al conectar con Gmail:', error);
     } else {
-        console.log('[EMAIL SERVICE] Servicio de correo listo para enviar mensajes');
+        console.log('[EMAIL SERVICE] Servicio de correo listo para enviar mensajes (Conexión segura)');
     }
 });
+
+
 
 /**
  * NUEVO (Paso 1) - Enviar correo de REGISTRO INMEDIATO
@@ -97,7 +122,7 @@ const enviarConfirmacionCita = async (cita, clienteCorreo, clienteNombre) => {
     console.log(`[EMAIL SERVICE] Enviando solicitud de CONFIRMACIÓN de cita ID: ${cita.id_cita} a ${clienteCorreo}`);
     
     // URL de confirmación que apunta al nuevo endpoint del controlador
-    const CONFIRMATION_URL = `http://vetback-api.onrender.com/api/citas/confirmar/${cita.token_confirmacion}`;
+    const CONFIRMATION_URL = `https://vetback-api.onrender.com/api/citas/confirmar/${cita.token_confirmacion}`;
     
     const mailOptions = {
         from: process.env.EMAIL_FROM,
