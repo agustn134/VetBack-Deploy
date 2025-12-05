@@ -335,6 +335,33 @@ async findByVeterinario(veterinarioId) {
         return result.rows;
     },
 
+  finAllData: async () => {
+    console.log('[MODELO CITA] Buscando todas las citas para estadísticas (finAllData)');
+
+    const query = `
+            SELECT 
+                c.*,
+                cl.nombre_completo AS cliente_nombre,
+                p.nombre AS mascota_nombre,
+                a.nombre AS animal_nombre,
+                u.nombre_completo AS veterinario_nombre
+            FROM tCitas c
+            JOIN tClientes cl ON c.cliente_id = cl.id
+            LEFT JOIN tPacientes p ON c.mascota_id = p.id
+            JOIN tAnimales a ON c.animal_id = a.id_tipoanimal
+            JOIN tUsuarios u ON c.veterinario_id = u.id
+            ORDER BY c.fecha_cita DESC, c.hora_cita DESC;
+        `;
+
+    try {
+      const result = await pool.query(query);
+      console.log(`[MODELO CITA] Se encontraron ${result.rows.length} citas`);
+      return result.rows;
+    } catch (error) {
+      console.error('[MODELO CITA] Error al buscar todas las citas:', error);
+      throw error;
+    }
+  },
     updateServiceStatus: async (citaId, servicioId, nuevoEstado) => {
         const query = `
             UPDATE tcitas_servicios
@@ -345,7 +372,32 @@ async findByVeterinario(veterinarioId) {
         const values = [nuevoEstado, citaId, servicioId];
         const result = await pool.query(query, values);
         return result.rows[0];
-    }
+    },
+
+
+    obtenerServiciosMasSolicitados: async (limit = 5) => {
+        const query = `
+            SELECT 
+                s.titulo,
+                COUNT(ts.servicio_id) AS count
+            FROM tcitas_servicios ts
+            JOIN tservicios_veterinaria s ON ts.servicio_id = s.id
+            GROUP BY s.titulo
+            ORDER BY count DESC
+            LIMIT $1;
+        `;
+        try {
+            const result = await pool.query(query, [limit]);
+            return result.rows.map(row => ({
+                ...row,
+                count: parseInt(row.count, 10)
+            }));
+        } catch (error) {
+            console.error("[MODELO CITA] Error al obtener servicios más solicitados:", error);
+            throw error;
+        }
+    },
+    
 
 };
 

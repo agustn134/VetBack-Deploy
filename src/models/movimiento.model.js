@@ -54,7 +54,30 @@ const MovimientoModel = {
     `;
     const result = await pool.query(query, [id]);
     return result.rows[0];
-  }
+  },
+
+  finAllData: async () => {
+    const query = `
+            SELECT m.*, 
+                   p.nombre AS producto_nombre,
+                   l.num_lote,
+                   u.nombre_completo AS usuario_nombre
+            FROM tMovimientos m
+            LEFT JOIN tProductos p ON m.producto_id = p.id
+            LEFT JOIN tLotes l ON m.lote_id = l.id
+            LEFT JOIN tUsuarios u ON m.usuario_id = u.id
+            ORDER BY m.fecha DESC;
+        `;
+
+    try {
+      const result = await pool.query(query);
+      console.log(`[MODELO MOVIMIENTO] Se encontraron ${result.rows.length} movimientos`);
+      return result.rows;
+    } catch (error) {
+      console.error('Error al obtener movimientos:', error);
+      throw error;
+    }
+  },
 };
 
 module.exports = MovimientoModel;

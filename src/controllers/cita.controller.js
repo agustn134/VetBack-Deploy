@@ -315,7 +315,7 @@ const confirmarCita = async (req, res) => {
                         <p>Hemos ratificado tu reserva en nuestro sistema.</p>
                         <div class="date">Fecha: ${citaConfirmada.fecha_cita} | Hora: ${citaConfirmada.hora_cita}</div>
                         <p>Te esperamos en Veterinaria "El Morralito".</p>
-                        <a href="https://elmorralitovet.web.app/" class="button">Volver a la web principal</a>
+                        <a href="http://localhost:4200/" class="button">Volver a la web principal</a>
                     </div>
                 </body>
                 </html>
@@ -345,7 +345,7 @@ const confirmarCita = async (req, res) => {
                         <h1>Error al confirmar la cita</h1>
                         <p>El enlace de confirmación es inválido, ha expirado, o la cita ya fue confirmada o cancelada previamente.</p>
                         <p>Por favor, contacte a la clínica si necesita ayuda.</p>
-                        <a href="https://elmorralitovet.web.app/" class="button">Volver a la web principal</a>
+                        <a href="http://localhost:4200/" class="button">Volver a la web principal</a>
                     </div>
                 </body>
                 </html>
@@ -371,7 +371,7 @@ const confirmarCita = async (req, res) => {
                     <h1>Error del Servidor</h1>
                     <p>Ocurrió un error inesperado al procesar tu solicitud.</p>
                     <p>Por favor, intente más tarde o contacte a la clínica.</p>
-                    <a href="https://elmorralitovet.web.app/" class="button">Volver a la web principal</a>
+                    <a href="http://localhost:4200/" class="button">Volver a la web principal</a>
                 </div>
             </body>
             </html>

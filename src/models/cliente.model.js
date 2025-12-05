@@ -104,10 +104,20 @@ const ClienteModel = {
             console.error('[MODELO CLIENTE] Error al crear cliente:', error);
             throw error;
         }
-    }
+    },
 
+    finAllData: async () => {
+        console.log('[MODELO CLIENTE] Buscando todos los clientes (finAllData)');
+        const query = 'SELECT id, nombre_completo, correo FROM tClientes ORDER BY nombre_completo;';
 
-    
+        try {
+            const result = await pool.query(query);
+            return result.rows;
+        } catch (error) {
+            console.error('[MODELO CLIENTE] Error al buscar todos los clientes:', error);
+            throw error;
+        }
+    },
 };
 
 module.exports = ClienteModel;

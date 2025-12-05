@@ -26,10 +26,7 @@ cors({
   origin: '*', // Permitir todo temporalmente para probar
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
-})
-
-
-);
+}));
 
 // Middlewares
 // app.use(express.json());
@@ -62,6 +59,7 @@ const imagenRoutes = require('./routes/imagen.routes');
 const cambiosRoutes = require('./routes/cambios.routes');
 
 const servicioRoutes = require('./routes/servicio.routes');
+const estadisticasRoutes = require('./routes/estadisticas.routes')
 
 
 // Conexión a las rutas
@@ -88,7 +86,7 @@ app.use('/api/imagenes', imagenRoutes);
 app.use('/api/cambios', cambiosRoutes);
 
 app.use('/api/servicios', servicioRoutes);
-
+app.use('/api/estadisticas', estadisticasRoutes);
 app.use('/api/expedientes-test', require('./routes/expediente.routes'));
 
 

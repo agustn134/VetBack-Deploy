@@ -73,7 +73,47 @@ const ProductoModel = {
         const query = 'DELETE FROM tProductos WHERE id = $1 RETURNING *;';
         const result = await pool.query(query, [id]);
         return result.rows[0];
-    }
+    },
+
+    obtenerProductosStockBajo: async (umbral = 10) => {
+        const query = `
+        SELECT
+            p.id,
+            p.nombre,
+            -- CÁLCULO MÁS EFICIENTE: Suma de la cantidad disponible en la tabla tLotes
+            COALESCE(
+                (SELECT SUM(l.cantidad_disponible) 
+                 FROM tLotes l 
+                 WHERE l.producto_id = p.id), 0
+            ) AS stock_actual,
+            -- Usamos 10 como "stock mínimo"
+            10 AS stock_minimo 
+        FROM tProductos p
+        GROUP BY p.id, p.nombre
+        HAVING 
+            -- FILTRO: Si el stock actual es igual o menor al umbral
+            COALESCE(
+                (SELECT SUM(l.cantidad_disponible) 
+                 FROM tLotes l 
+                 WHERE l.producto_id = p.id), 0
+            ) <= $1 
+        ORDER BY stock_actual ASC
+        LIMIT 10;
+        `;
+        try {
+            const result = await pool.query(query, [umbral]);
+            return result.rows.map(row => ({
+                ...row,
+                stock_actual: parseInt(row.stock_actual, 10),
+                stockMinimo: parseInt(row.stock_minimo, 10)
+            }));
+        } catch (error) {
+            console.error("[MODELO PRODUCTO] Error al obtener productos con stock bajo:", error);
+            throw error;
+        }
+    },
+
+
 };
 
 module.exports = ProductoModel;
