@@ -4,29 +4,49 @@ const cors = require('cors');
 const path = require('path');
 
 const allowedOrigins = [
-  //'http://localhost:4200', // Para cuando pruebas en tu PC
+  'http://localhost:4200', // Para cuando pruebas en tu PC
   'https://elmorralitovet.web.app', // Tu frontend en Firebase
   'https://elmorralitovet.firebaseapp.com' // URL alternativa de Firebase
 ];
 
-app.use(
-//   cors({
-//   origin: function (origin, callback) {
-//     if (!origin || allowedOrigins.includes(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Bloqueado por CORS'));
-//     }
-//   },
-  
-//   credentials: true // Importante si usas cookies o headers de autorización
-// })
+// app.use(
 
-cors({
-  origin: '*', // Permitir todo temporalmente para probar
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+// //   cors({
+// //   origin: function (origin, callback) {
+// //     if (!origin || allowedOrigins.includes(origin)) {
+// //       callback(null, true);
+// //     } else {
+// //       callback(new Error('Bloqueado por CORS'));
+// //     }
+// //   },
+  
+// //   credentials: true // Importante si usas cookies o headers de autorización
+// // })
+
+// cors({
+//   origin: '*', // Permitir todo temporalmente para probar
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization']
+// }));
+
+
+// Configuración de CORS
+app.use(cors({
+  origin: function (origin, callback) {
+    // Permitir solicitudes sin origen (como apps móviles o curl)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      var msg = 'La política CORS para este sitio no permite el acceso desde el origen especificado.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Asegúrate de incluir PATCH si lo usas
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true // Permitir cookies/headers de autorización
 }));
+
 
 // Middlewares
 // app.use(express.json());
